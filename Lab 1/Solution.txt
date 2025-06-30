@@ -1,0 +1,36 @@
+clc; clear; close all;
+
+% Define simulation parameters
+N = 100;        % Number of time steps
+y = zeros(1, N);
+y(1) = 0;       % Initial condition y[0] (MATLAB uses index 1)
+y(2) = 1;       % Initial condition y[1]
+
+% Modified input parameters
+cases = [1.97, -0.5, 1.8; 
+         0.7, 1.32, 0.2;
+         1, -1.5, 0.5];
+
+x = zeros(1, N); % Excitation input x[n]
+
+for i = 1:size(cases,1)
+    figure(i); % Create a separate figure for each case
+    
+    % Extract parameters
+    a = cases(i, 1);
+    b = cases(i, 2);
+    c = cases(i, 3);
+    
+    % Compute system response iteratively
+    for n = 3:N  % Start from n=3 since y(1) and y(2) are given
+        y(n) = a*x(n) + b*y(n-1) + c*y(n-2);
+    end
+
+    % Plot results
+    stem(1:N, y, 'filled');
+    xlabel('n');     
+    ylabel('y[n]');  
+    title(sprintf('Second Order System: a=%.2f, b=%.2f, c=%.2f', a, b, c));
+    axis([0, 55, -6, 6]); % Adjusted axis limits
+    grid on;
+end
